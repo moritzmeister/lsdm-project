@@ -1,6 +1,9 @@
 ## Mac
 .DS_Store
 
+## data
+data/
+
 # Compiled class file
 *.class
 
