@@ -4,7 +4,6 @@ import master2018.flink.datatypes.PositionEvent;
 import master2018.flink.sources.PositionSource;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class VehicleTelematics {
@@ -23,14 +22,14 @@ public class VehicleTelematics {
         //String inputFile = args[0];
         //String outputFolder = args[1];
 
-        String inputFile = "./data/sample.csv";
+        String inputFile = "data/sample.csv";
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-        DataStream<PositionEvent> positionStream = env.addSource(new PositionSource(inputFile)).setParallelism(4);
+        DataStream<PositionEvent> positionStream = env.addSource(new PositionSource(inputFile)).setParallelism(1);
 
-        positionStream.print().setParallelism(1);
+        positionStream.print().setParallelism(2);
 
         env.execute("vehicle-telematics");
 
