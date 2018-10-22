@@ -14,13 +14,10 @@ public class PositionEvent {
     private boolean hasWatermarkTime;
     private Long watermarkTime;
 
-    public PositionEvent(String line){
+    public PositionEvent(String[] line){
         /* Constructs a CensusData Object from a comma separated string input. */
-        String[] args = line.split(",");
+        String[] args = line;
 
-        if (args.length != 8){
-            throw new RuntimeException("Not enough values in input data: " + line);
-        }
 
         this.time = Long.parseLong(args[0]);
         this.vid = args[1];

@@ -1,7 +1,6 @@
-package master2018.flink.sources;
+package master2018.flink.source;
 
 import master2018.flink.datatypes.PositionEvent;
-import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.api.watermark.Watermark;
 
@@ -50,21 +49,32 @@ public class PositionSource implements SourceFunction<PositionEvent> {
         *
          */
         while (reader.ready() && (line = reader.readLine()) != null) {
-            data = new PositionEvent(line);
 
-            // Check if Event time progressed and if it did increase the currentEventTime
-            if(data.getTime() > currentEventTime) {
-                data.setWatermark();
-                currentEventTime = data.getWatermarkTime();
+            String[] args = line.split(",");
+
+            // Skip compromised rows in the input data and output them to the console
+            if (args.length != 8){
+                //throw new RuntimeException("Not enough values in input data: " + line);
+                System.out.println("Error in input data: " + line);
+            } else {
+                data = new PositionEvent(args);
+
+                // Check if Event time progressed and if it did increase the currentEventTime
+                if(data.getTime() > currentEventTime) {
+                    data.setWatermark();
+                    currentEventTime = data.getWatermarkTime();
+                }
+
+                sourceContext.collectWithTimestamp(data, data.getTime());
+
+                if (data.hasWatermarkTime()) {
+                    sourceContext.emitWatermark(new Watermark(data.getWatermarkTime()));
+                }
+
+                count += 1;
             }
 
-            sourceContext.collectWithTimestamp(data, data.getTime());
 
-            if (data.hasWatermarkTime()) {
-                sourceContext.emitWatermark(new Watermark(data.getWatermarkTime()));
-            }
-
-            count += 1;
         }
 
         System.out.println("Lines read: " + Long.toString(count));

@@ -3,6 +3,7 @@
 
 ## data
 data/
+output/
 
 ## Maven
 target/
@@ -110,4 +111,5 @@ fabric.properties
 
 # Sonarlint plugin
 .idea/sonarlint
+
 
