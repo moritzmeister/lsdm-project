@@ -3,7 +3,7 @@ package master2018.flink.map;
 import master2018.flink.datatypes.Accident;
 import master2018.flink.datatypes.PositionEvent;
 import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
@@ -19,13 +19,14 @@ public class AccidentReporter {
     public static SingleOutputStreamOperator<Accident> run(DataStream<PositionEvent> stream) {
         return stream
                 .filter((PositionEvent e) -> e.getSpeed() == ACCIDENT_SPEED).setParallelism(1)
-                .keyBy(new KeySelector<PositionEvent, Tuple3<String, Integer, Integer>>() {
+                .keyBy(new KeySelector<PositionEvent, Tuple4<String, Integer, Integer, Integer>>() {
                     @Override
-                    public Tuple3<String, Integer, Integer> getKey(PositionEvent positionEvent) {
-                        return new Tuple3<>(
+                    public Tuple4<String, Integer, Integer, Integer> getKey(PositionEvent positionEvent) {
+                        return new Tuple4<>(
                                 positionEvent.getVid(),
                                 positionEvent.getXway(),
-                                positionEvent.getDirection());
+                                positionEvent.getDirection(),
+                                positionEvent.getPosition());
                     }
                 })
                 .countWindow(4, 1)
@@ -33,34 +34,46 @@ public class AccidentReporter {
     }
 
     public static class CustomWindow implements WindowFunction<PositionEvent, Accident,
-                Tuple3<String, Integer, Integer>, GlobalWindow> {
+                Tuple4<String, Integer, Integer, Integer>, GlobalWindow> {
 
         @Override
-        public void apply(Tuple3<String, Integer, Integer> key, GlobalWindow globalWindow,
+        public void apply(Tuple4<String, Integer, Integer, Integer> key, GlobalWindow globalWindow,
                           Iterable<PositionEvent> iterable, Collector<Accident> collector) {
 
             Iterator<PositionEvent> events = iterable.iterator();
 
-            PositionEvent firstElement = events.next();
-            PositionEvent lastElement = null;
+            PositionEvent currentElement;
+            PositionEvent oldElement;
+            PositionEvent firstElement;
 
-            int count = 1;
-            while (events.hasNext() && count < 4) {
-                count++;
-                lastElement = events.next();
+            try {
+                oldElement = firstElement = events.next();
+                currentElement = events.next();
+
+                int count = 2;
+                while (events.hasNext() && count < 4
+                        && (currentElement.getTime() - oldElement.getTime()) == 30000) {
+                    count++;
+                    oldElement = currentElement;
+                    currentElement = events.next();
+
+                    if (count == 4) {
+                        Accident accident = new Accident();
+                        accident.setTime1(firstElement.getTime());
+                        accident.setTime2(currentElement.getTime());
+                        accident.setVid(currentElement.getVid());
+                        accident.setXWay(currentElement.getXway());
+                        accident.setSegment(currentElement.getSegment());
+                        accident.setDirection(currentElement.getDirection());
+                        accident.setPosition(currentElement.getPosition());
+                        collector.collect(accident);
+                    }
+                }
+            } catch (Exception e) {
+
             }
 
-            if (count == 4) {
-                Accident accident = new Accident();
-                accident.setTime1(firstElement.getTime());
-                accident.setTime2(lastElement.getTime());
-                accident.setVid(lastElement.getVid());
-                accident.setXWay(lastElement.getXway());
-                accident.setSegment(lastElement.getSegment());
-                accident.setDirection(lastElement.getDirection());
-                accident.setPosition(lastElement.getPosition());
-                collector.collect(accident);
-            }
+
         }
     }
 
