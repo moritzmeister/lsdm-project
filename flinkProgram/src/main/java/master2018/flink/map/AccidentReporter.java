@@ -2,6 +2,7 @@ package master2018.flink.map;
 
 import master2018.flink.datatypes.Accident;
 import master2018.flink.datatypes.PositionEvent;
+import master2018.flink.keyselector.VidKey;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -19,15 +20,7 @@ public class AccidentReporter {
     public static SingleOutputStreamOperator<Accident> run(DataStream<PositionEvent> stream) {
         return stream
                 .filter((PositionEvent e) -> e.getSpeed() == ACCIDENT_SPEED).setParallelism(1)
-                .keyBy(new KeySelector<PositionEvent, Tuple3<String, Integer, Integer>>() {
-                    @Override
-                    public Tuple3<String, Integer, Integer> getKey(PositionEvent positionEvent) {
-                        return new Tuple3<>(
-                                positionEvent.getVid(),
-                                positionEvent.getXway(),
-                                positionEvent.getDirection());
-                    }
-                })
+                .keyBy(new VidKey())
                 .countWindow(4, 1)
                 .apply(new CustomWindow());
     }

@@ -60,15 +60,15 @@ public class PositionSource implements SourceFunction<PositionEvent> {
                 data = new PositionEvent(args);
 
                 // Check if Event time progressed and if it did increase the currentEventTime
-                if(data.getTime() > currentEventTime) {
+                if((data.getTime()*1000) > currentEventTime) {
                     data.setWatermark();
-                    currentEventTime = data.getWatermarkTime();
+                    currentEventTime = (data.getWatermarkTime()*1000);
                 }
 
-                sourceContext.collectWithTimestamp(data, data.getTime());
+                sourceContext.collectWithTimestamp(data, (data.getTime()*1000));
 
                 if (data.hasWatermarkTime()) {
-                    sourceContext.emitWatermark(new Watermark(data.getWatermarkTime()));
+                    sourceContext.emitWatermark(new Watermark((data.getWatermarkTime()*1000)));
                 }
 
                 count += 1;
