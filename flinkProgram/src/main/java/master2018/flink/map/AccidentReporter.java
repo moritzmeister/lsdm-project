@@ -52,7 +52,7 @@ public class AccidentReporter {
 
                 int count = 2;
                 while (events.hasNext() && count < 4
-                        && (currentElement.getTime() - oldElement.getTime()) == 30000) {
+                        && (currentElement.getTime() - oldElement.getTime()) == 30) {
                     count++;
                     oldElement = currentElement;
                     currentElement = events.next();
