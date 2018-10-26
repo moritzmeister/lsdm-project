@@ -1,6 +1,5 @@
 package master2018.flink;
 
-import javafx.geometry.Pos;
 import master2018.flink.datatypes.PositionEvent;
 import master2018.flink.datatypes.SpeedFine;
 import master2018.flink.keyselector.VidKey;
@@ -28,9 +27,9 @@ public class VehicleTelematics {
         String inputFile = args[0];
         String outputFolder = args[1];
 
-        System.out.println(args[0]);
-        System.out.println(args[1]);
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        //System.out.println(args[0]);
+        //System.out.println(args[1]);
+        //System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
         //String inputFile = "./data/traffic-3xways.csv";
         //String outputFolder = "./output";
