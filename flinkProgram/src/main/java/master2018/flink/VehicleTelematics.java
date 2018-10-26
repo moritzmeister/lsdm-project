@@ -34,7 +34,7 @@ public class VehicleTelematics {
         System.out.println(args[1]);
         System.out.println("Working Directory = " + System.getProperty("user.dir"));*/
 
-        String inputFile = "data/traffic-3xways.csv";
+        String inputFile = "data/test_accidents.csv";
         String outputFolder = "output";
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

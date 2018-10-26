@@ -37,7 +37,7 @@ public class PositionEvent {
     }
 
     public Long getWatermarkTime() {
-        return (this.watermarkTime * 1000);
+        return (this.watermarkTime);
     }
 
     public void setWatermark() {
@@ -47,7 +47,7 @@ public class PositionEvent {
 
     public Long getTime() {
         // Flink works in milliseconds
-        return (this.time * 1000);
+        return (this.time);
     }
 
     public String getVid() {
