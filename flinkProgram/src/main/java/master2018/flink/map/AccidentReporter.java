@@ -2,8 +2,9 @@ package master2018.flink.map;
 
 import master2018.flink.datatypes.Accident;
 import master2018.flink.datatypes.PositionEvent;
+import master2018.flink.keyselector.VidKey;
 import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.api.java.tuple.Tuple4;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
@@ -19,25 +20,16 @@ public class AccidentReporter {
     public static SingleOutputStreamOperator<Accident> run(DataStream<PositionEvent> stream) {
         return stream
                 .filter((PositionEvent e) -> e.getSpeed() == ACCIDENT_SPEED).setParallelism(1)
-                .keyBy(new KeySelector<PositionEvent, Tuple4<String, Integer, Integer, Integer>>() {
-                    @Override
-                    public Tuple4<String, Integer, Integer, Integer> getKey(PositionEvent positionEvent) {
-                        return new Tuple4<>(
-                                positionEvent.getVid(),
-                                positionEvent.getXway(),
-                                positionEvent.getDirection(),
-                                positionEvent.getPosition());
-                    }
-                })
+                .keyBy(new VidKey())
                 .countWindow(4, 1)
                 .apply(new CustomWindow());
     }
 
     public static class CustomWindow implements WindowFunction<PositionEvent, Accident,
-                Tuple4<String, Integer, Integer, Integer>, GlobalWindow> {
+                Tuple3<String, Integer, Integer>, GlobalWindow> {
 
         @Override
-        public void apply(Tuple4<String, Integer, Integer, Integer> key, GlobalWindow globalWindow,
+        public void apply(Tuple3<String, Integer, Integer> key, GlobalWindow globalWindow,
                           Iterable<PositionEvent> iterable, Collector<Accident> collector) {
 
             Iterator<PositionEvent> events = iterable.iterator();
@@ -52,7 +44,8 @@ public class AccidentReporter {
 
                 int count = 2;
                 while (events.hasNext() && count < 4
-                        && (currentElement.getTime() - oldElement.getTime()) == 30) {
+                        && (currentElement.getTime() - oldElement.getTime()) == 30
+                        && (currentElement.getPosition() == oldElement.getPosition())) {
                     count++;
                     oldElement = currentElement;
                     currentElement = events.next();

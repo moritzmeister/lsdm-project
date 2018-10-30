@@ -10,7 +10,6 @@ import master2018.flink.source.PositionSource;
 import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class VehicleTelematics {
@@ -21,7 +20,7 @@ public class VehicleTelematics {
 
     public static void main(String[] args) throws Exception {
 
-        /*
+
         if (args.length < 2) {
             System.out.println("Usage: <input file> <output folder>");
             throw new Exception();
@@ -30,12 +29,12 @@ public class VehicleTelematics {
         String inputFile = args[0];
         String outputFolder = args[1];
 
-        System.out.println(args[0]);
-        System.out.println(args[1]);
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));*/
+        //System.out.println(args[0]);
+        //System.out.println(args[1]);
+        //System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
-        String inputFile = "data/test_accidents.csv";
-        String outputFolder = "output";
+        //String inputFile = "data/test_accidents.csv";
+        //String outputFolder = "output";
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
