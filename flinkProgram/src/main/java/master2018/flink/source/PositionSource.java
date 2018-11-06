@@ -67,9 +67,9 @@ public class PositionSource implements SourceFunction<PositionEvent> {
 
                 sourceContext.collectWithTimestamp(data, (data.getTime()*1000));
 
-                //if (data.hasWatermarkTime()) {
-                //    sourceContext.emitWatermark(new Watermark((data.getWatermarkTime()*1000)));
-                //}
+                if (data.hasWatermarkTime()) {
+                    sourceContext.emitWatermark(new Watermark((data.getWatermarkTime()*1000)));
+                }
 
                 count += 1;
             }
