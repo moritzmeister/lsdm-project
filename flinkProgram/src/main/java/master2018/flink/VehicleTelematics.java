@@ -39,7 +39,7 @@ public class VehicleTelematics {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-        env.setParallelism(2);
+        //env.setParallelism(2);
 
         DataStream<PositionEvent> positionStream = env.addSource(new PositionSource(inputFile));
 
@@ -47,7 +47,7 @@ public class VehicleTelematics {
         SpeedRadar speedControl = new SpeedRadar();
         AccidentReporter accidentsChecker = new AccidentReporter();
         AvgSpeedCheck avgSpeedChecker = new AvgSpeedCheck();
-
+/*
         KeyedStream<PositionEvent, Tuple3<String, Integer, Integer>> test = positionStream.filter((PositionEvent e) -> (e.getSegment() >= 52
                 && e.getSegment() <= 56)).setParallelism(1)
 
@@ -60,7 +60,7 @@ public class VehicleTelematics {
 
                 .keyBy(new VidKey());
 
-        test.print();
+        test.print();*/
 
         // Run jobs
         DataStream<SpeedFine> OutputFines= speedControl.run(positionStream);

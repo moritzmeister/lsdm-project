@@ -4,6 +4,7 @@ import org.apache.flink.api.java.tuple.Tuple6;
 
 import java.io.Serializable;
 
+/*
 public class AvgSpeedFine extends Tuple6<Long, Long, String, Integer, Integer, Double> {
     public AvgSpeedFine() {
     }
@@ -32,8 +33,9 @@ public class AvgSpeedFine extends Tuple6<Long, Long, String, Integer, Integer, D
         f5 = avgSpeed;
     }
 }
-/*
-public class AvgSpeedFine implements Serializable{
+*/
+
+public class AvgSpeedFine implements Serializable {
 
     private Long time1;
     private Long time2;
@@ -93,4 +95,4 @@ public class AvgSpeedFine implements Serializable{
         return sb.toString();
     }
 }
-*/
+

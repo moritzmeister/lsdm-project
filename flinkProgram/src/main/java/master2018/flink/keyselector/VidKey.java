@@ -6,10 +6,11 @@ import org.apache.flink.api.java.tuple.Tuple3;
 
 public class VidKey implements KeySelector<PositionEvent, Tuple3<String, Integer, Integer>> {
 
-    Tuple3 key = new Tuple3();
+
 
     @Override
     public Tuple3 getKey(PositionEvent data) {
+        Tuple3 key = new Tuple3();
         key.f0 = data.getVid();
         key.f1 = data.getXway();
         key.f2 = data.getDirection();
