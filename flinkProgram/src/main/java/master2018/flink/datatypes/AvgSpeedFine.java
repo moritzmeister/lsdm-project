@@ -57,7 +57,6 @@ public class AvgSpeedFine implements Serializable {
 
     }
 
-
     public void setTime1(Long time1) {
         this.time1 = time1;
     }

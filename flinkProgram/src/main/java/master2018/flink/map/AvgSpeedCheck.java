@@ -28,14 +28,14 @@ public class AvgSpeedCheck {
         return stream
                 .filter((PositionEvent e) -> (e.getSegment() >= SEGMENT_START
                         && e.getSegment() <= SEGMENT_END)).setParallelism(1)
-
+/*
                 .assignTimestampsAndWatermarks(new AscendingTimestampExtractor<PositionEvent>() {
                     @Override
                     public long extractAscendingTimestamp(PositionEvent positionEvent) {
                         return positionEvent.getTime() * 1000;
                     }
                 })
-
+*/
                 .keyBy(new VidKey())
                 .window(EventTimeSessionWindows.withGap(Time.seconds(31))) // if there is a missing event, we assume a new trip started
                 .apply(new avgSpeedWindow());
@@ -64,7 +64,9 @@ public class AvgSpeedCheck {
                 currentElement = events.next();
                 firstElement = currentElement;
                 // check if first element is from start segment, only then continue to loop through all events in window
-                if (currentElement.getSegment() == SEGMENT_START || currentElement.getSegment() == SEGMENT_END) {
+                if (currentElement.getSegment() == SEGMENT_START
+                        || currentElement.getSegment() == SEGMENT_END
+                        ) {
                     allSegments = true;
                     System.out.println("start window");
                 }
@@ -76,7 +78,8 @@ public class AvgSpeedCheck {
                     // check if next element is from same segment or the one after
                     if ( !(currentElement.getSegment() == oldElement.getSegment()
                             || currentElement.getSegment() == (oldElement.getSegment()+1)
-                            || currentElement.getSegment() == (oldElement.getSegment()-1)) ) {
+                            || currentElement.getSegment() == (oldElement.getSegment()-1)
+                    ) ) {
                         allSegments = false;
                         System.out.println("unfinished window");
                     }
@@ -91,13 +94,15 @@ public class AvgSpeedCheck {
 
                 if (allSegments) {
                     //switch first and last element if needed
-                    if (firstElement.getSegment() == SEGMENT_END) {
-                        currentElement = firstElement;
-                        firstElement = lastElement;
-                        lastElement = currentElement;
-                    }
+
+                    //if (firstElement.getSegment() == SEGMENT_END) {
+                    //    currentElement = firstElement;
+                    //    firstElement = lastElement;
+                    //    lastElement = currentElement;
+                    //}
+
                     // calc speed
-                    avgSpeed = (((lastElement.getPosition() - firstElement.getPosition()) * 1.0)
+                    avgSpeed = ((Math.abs(lastElement.getPosition() - firstElement.getPosition()) * 1.0)
                             / (lastElement.getTime() - firstElement.getTime())) * SPEED_CONVERSION;
 
                     if (avgSpeed > MAXIMUM_SPEED) {
