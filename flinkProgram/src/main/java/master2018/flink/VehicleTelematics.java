@@ -4,14 +4,24 @@ import master2018.flink.datatypes.Accident;
 import master2018.flink.datatypes.AvgSpeedFine;
 import master2018.flink.datatypes.PositionEvent;
 import master2018.flink.datatypes.SpeedFine;
-import master2018.flink.map.AccidentReporter;
-import master2018.flink.map.AvgSpeedCheck;
-import master2018.flink.map.SpeedRadar;
+import master2018.flink.operator.AccidentReporter;
+import master2018.flink.operator.AvgSpeedCheck;
+import master2018.flink.operator.SpeedRadar;
 import master2018.flink.source.PositionSource;
 import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+/**
+ * This is an implementation of the 'vehicle-telematics' assignment for the course on Large Scale Data Management at
+ * Universidad Politecnica de Madrid.
+ * This is the main class to be run, in order to produce the desired results for the three funcitonalities.
+ *
+ * @author  Gioele Bigini, Moritz Meister
+ * @version 1.0
+ *
+ */
 
 public class VehicleTelematics {
 
