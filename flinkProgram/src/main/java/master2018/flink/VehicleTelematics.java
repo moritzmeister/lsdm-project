@@ -18,7 +18,7 @@ import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExt
 /**
  * This is an implementation of the 'vehicle-telematics' assignment for the course on Large Scale Data Management at
  * Universidad Politecnica de Madrid.
- * This is the main class to be run, in order to produce the desired results for the three funcitonalities.
+ * This is the main class to be run, in order to produce the desired results for the three functionalities.
  *
  * @author  Gioele Bigini, Moritz Meister
  * @version 1.0
@@ -34,6 +34,7 @@ public class VehicleTelematics {
     public static void main(String[] args) throws Exception {
 
         //flink run -p 10 -c master2018.flink.VehicleTelematics target/flinkProgram-1.0-SNAPSHOT.jar /Users/moritzmeister/code/lsdm-project/flinkProgram/data/traffic-3xways.csv /Users/moritzmeister/code/lsdm-project/flinkProgram/output
+        //flink run -p 10 -c master2018.flink.VehicleTelematics target/flinkProgram-1.0-SNAPSHOT.jar /Users/gioelebigini/SourceTree/lsdm-project/flinkProgram/data/traffic-3xways.csv /Users/gioelebigini/SourceTree/lsdm-project/flinkProgram/output/
         if (args.length < 2) {
             System.out.println("Usage: <input file> <output folder>");
             throw new Exception();
