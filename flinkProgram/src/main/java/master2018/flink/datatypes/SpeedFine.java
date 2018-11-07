@@ -6,7 +6,7 @@ public class SpeedFine {
     private String vid;
     private int speed;
     private int xway;
-    private int lane;
+    private int segment;
     private int direction;
 
     public SpeedFine(PositionEvent positionEvent) {
@@ -14,7 +14,7 @@ public class SpeedFine {
         this.vid = positionEvent.getVid();
         this.speed = positionEvent.getSpeed();
         this.xway = positionEvent.getXway();
-        this.lane = positionEvent.getLane();
+        this.segment = positionEvent.getSegment();
         this.direction = positionEvent.getDirection();
     }
 
@@ -34,8 +34,8 @@ public class SpeedFine {
         this.xway = xway;
     }
 
-    public void setLane(int lane) {
-        this.lane = lane;
+    public void setSegment(int segment) {
+        this.segment = segment;
     }
 
     public void setDirection(int direction) {
@@ -48,10 +48,10 @@ public class SpeedFine {
 
         sb.append(Long.toString(time)).append(",");
         sb.append(vid).append(",");
-        sb.append(Integer.toString(speed)).append(",");
         sb.append(Integer.toString(xway)).append(",");
-        sb.append(Integer.toString(lane)).append(",");
-        sb.append(Integer.toString(direction));
+        sb.append(Integer.toString(segment)).append(",");
+        sb.append(Integer.toString(direction)).append(",");
+        sb.append(Integer.toString(speed));
 
         return sb.toString();
     }
