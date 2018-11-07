@@ -1,5 +1,7 @@
 package master2018.flink.datatypes;
 
+import org.apache.flink.api.java.tuple.Tuple6;
+
 /*
    SPEEDFINE CLASS
 
@@ -9,15 +11,10 @@ package master2018.flink.datatypes;
 
    Output File: "speedfines.csv"
 */
-public class SpeedFine {
+public class SpeedFine extends Tuple6<Long, String, Integer, Integer, Integer, Integer> {
 
-    /* Variable Allocation */
-    private Long time;
-    private String vid;
-    private int speed;
-    private int xway;
-    private int segment;
-    private int direction;
+    public SpeedFine() {
+    }
 
     /*
        Class Constructor
@@ -29,14 +26,13 @@ public class SpeedFine {
        6. direction = Direction ID
     */
     public SpeedFine(PositionEvent positionEvent) {
-        this.time = positionEvent.getTime();
-        this.vid = positionEvent.getVid();
-        this.speed = positionEvent.getSpeed();
-        this.xway = positionEvent.getXway();
-        this.segment = positionEvent.getSegment();
-        this.direction = positionEvent.getDirection();
+        this.f0 = positionEvent.getTime();
+        this.f1 = positionEvent.getVid();
+        this.f2 = positionEvent.getXway();
+        this.f3 = positionEvent.getSegment();
+        this.f4 = positionEvent.getDirection();
+        this.f5 = positionEvent.getSpeed();
     }
-
 
     /*
        Object Conversion to String - Returns the object attributes as a comma separated string:
@@ -46,12 +42,12 @@ public class SpeedFine {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(Long.toString(time)).append(",");
-        sb.append(vid).append(",");
-        sb.append(Integer.toString(xway)).append(",");
-        sb.append(Integer.toString(segment)).append(",");
-        sb.append(Integer.toString(direction)).append(",");
-        sb.append(Integer.toString(speed));
+        sb.append(Long.toString(f0)).append(",");
+        sb.append(f1).append(",");
+        sb.append(Integer.toString(f2)).append(",");
+        sb.append(Integer.toString(f3)).append(",");
+        sb.append(Integer.toString(f4)).append(",");
+        sb.append(Integer.toString(f5));
 
         return sb.toString();
     }

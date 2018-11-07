@@ -1,28 +1,17 @@
 package master2018.flink.datatypes;
 
 /*
-   POSITIONEVENT CLASS
+   POSITION EVENT CLASS
 
    This class is a datatype used to generate the tuple
    related to a new incoming event. These tuples are
    the one coming from the input source and that will be
    used for processing.
 */
-public class PositionEvent {
 
-    /* Variable Allocation */
-    private Long time;
-    private String vid;
-    private int speed;
-    private int xway;
-    private int lane;
-    private int direction;
-    private int segment;
-    private int position;
+import org.apache.flink.api.java.tuple.Tuple8;
 
-    /* WaterMarks Allocation */
-    private boolean hasWatermarkTime;
-    private Long watermarkTime;
+public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Integer, Integer, Integer, Integer> {
 
     /*
        Class Constructor
@@ -34,70 +23,70 @@ public class PositionEvent {
        5. direction        = Segment Number
        6. segment          = Direction ID
        7. position         = Position Number
-       8. hasWatermarkTime = Boolean hasWatermark
-       9. watermarkTime    = Watermark
     */
+
+    public PositionEvent(){
+    }
+
     public PositionEvent(String[] line){
         /* Constructs from terminal arguments */
         String[] args = line;
 
-        this.time = Long.parseLong(args[0]);
-        this.vid = args[1];
-        this.speed = Integer.parseInt(args[2]);
-        this.xway = Integer.parseInt(args[3]);
-        this.lane = Integer.parseInt(args[4]);
-        this.direction = Integer.parseInt(args[5]);
-        this.segment = Integer.parseInt(args[6]);
-        this.position = Integer.parseInt(args[7]);
-        this.hasWatermarkTime = false;
-        this.watermarkTime = null;
+        this.f0 = Long.parseLong(args[0]);
+        this.f1 = args[1];
+        this.f2 = Integer.parseInt(args[2]);
+        this.f3 = Integer.parseInt(args[3]);
+        this.f4 = Integer.parseInt(args[4]);
+        this.f5 = Integer.parseInt(args[5]);
+        this.f6 = Integer.parseInt(args[6]);
+        this.f7 = Integer.parseInt(args[7]);
     }
 
-    /* Getter and Setters */
-    public boolean hasWatermarkTime() {
-        return this.hasWatermarkTime;
-    }
+    public PositionEvent(String line){
+        /* Constructs from terminal arguments */
+        String[] args = line.split(",");
 
-    public void setWatermark() {
-        this.hasWatermarkTime = true;
-        this.watermarkTime = this.time;
-    }
-
-    public Long getWatermarkTime() {
-        return (this.watermarkTime);
+        this.f0 = Long.parseLong(args[0]);
+        this.f1 = args[1];
+        this.f2 = Integer.parseInt(args[2]);
+        this.f3 = Integer.parseInt(args[3]);
+        this.f4 = Integer.parseInt(args[4]);
+        this.f5 = Integer.parseInt(args[5]);
+        this.f6 = Integer.parseInt(args[6]);
+        this.f7 = Integer.parseInt(args[7]);
     }
 
     public Long getTime() {
         // Flink works in milliseconds
-        return (this.time);
+        return this.f0;
     }
 
     public String getVid() {
-        return this.vid;
+        return this.f1;
     }
 
     public int getSpeed() {
-        return this.speed;
+        return this.f2;
     }
 
     public int getXway() {
-        return this.xway;
+        return this.f3;
     }
 
     public int getLane() {
-        return this.lane;
+        return this.f4;
     }
 
     public int getDirection() {
-        return this.direction;
+        return this.f5;
     }
 
     public int getSegment() {
-        return this.segment;
+        return this.f6;
     }
 
     public int getPosition() {
-        return this.position;
+        return this.f7;
     }
 
     /*
@@ -108,17 +97,15 @@ public class PositionEvent {
     public String toString() {
         /* Returns the object attributes as a comma separated string */
         StringBuilder sb = new StringBuilder();
-        sb.append(Long.toString(time)).append(",");
-        sb.append(vid).append(",");
-        sb.append(Integer.toString(speed)).append(",");
-        sb.append(Integer.toString(xway)).append(",");
-        sb.append(Integer.toString(lane)).append(",");
-        sb.append(Integer.toString(direction)).append(",");
-        sb.append(Integer.toString(segment)).append(",");
-        sb.append(Integer.toString(position)).append(", WatermarkTime: ");
-        sb.append(hasWatermarkTime).append(",");
-        sb.append(watermarkTime);
-
+        sb.append(Long.toString(f0)).append(",");
+        sb.append(f1).append(",");
+        sb.append(Integer.toString(f2)).append(",");
+        sb.append(Integer.toString(f3)).append(",");
+        sb.append(Integer.toString(f4)).append(",");
+        sb.append(Integer.toString(f5)).append(",");
+        sb.append(Integer.toString(f6)).append(",");
+        sb.append(Integer.toString(f7));
         return sb.toString();
     }
 }
+

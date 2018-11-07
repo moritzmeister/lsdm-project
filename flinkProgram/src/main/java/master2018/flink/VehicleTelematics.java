@@ -4,6 +4,7 @@ import master2018.flink.datatypes.Accident;
 import master2018.flink.datatypes.AvgSpeedFine;
 import master2018.flink.datatypes.PositionEvent;
 import master2018.flink.datatypes.SpeedFine;
+import master2018.flink.mapfunction.StringToPosition;
 import master2018.flink.operator.AccidentReporter;
 import master2018.flink.operator.AvgSpeedCheck;
 import master2018.flink.operator.SpeedRadar;
@@ -12,6 +13,7 @@ import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 
 /**
  * This is an implementation of the 'vehicle-telematics' assignment for the course on Large Scale Data Management at
@@ -48,6 +50,16 @@ public class VehicleTelematics {
         //env.setParallelism(2);
 
         DataStream<PositionEvent> positionStream = env.addSource(new PositionSource(inputFile));
+
+        //DataStream<PositionEvent> positionStream = env.readTextFile(inputFile).setParallelism(1)
+        //        .map(new StringToPosition()).setParallelism(1)
+        //        .assignTimestampsAndWatermarks(new AscendingTimestampExtractor<PositionEvent>() {
+//
+        //            @Override
+        //            public long extractAscendingTimestamp(PositionEvent element) {
+        //                return element.getTime()*1000;
+        //            }
+        //        });
 
         // Init transformations
         SpeedRadar speedControl = new SpeedRadar();

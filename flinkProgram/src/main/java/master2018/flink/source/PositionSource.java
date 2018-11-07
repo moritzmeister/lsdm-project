@@ -59,24 +59,17 @@ public class PositionSource implements SourceFunction<PositionEvent> {
             } else {
                 data = new PositionEvent(args);
 
-                // Check if Event time progressed and if it did increase the currentEventTime
-                if((data.getTime()*1000) > currentEventTime) {
-                    data.setWatermark();
-                    currentEventTime = (data.getWatermarkTime()*1000);
-                }
-
                 sourceContext.collectWithTimestamp(data, (data.getTime()*1000));
 
-                if (data.hasWatermarkTime()) {
-                    sourceContext.emitWatermark(new Watermark((data.getWatermarkTime()*1000)));
+                // Check if Event time progressed and if it did increase the currentEventTime
+                if((data.getTime()*1000) > currentEventTime) {
+                    currentEventTime = (data.getTime()*1000);
+                    sourceContext.emitWatermark(new Watermark((data.getTime()*1000)));
                 }
 
                 count += 1;
             }
-
-
         }
-
         System.out.println("Lines read: " + Long.toString(count));
     }
 

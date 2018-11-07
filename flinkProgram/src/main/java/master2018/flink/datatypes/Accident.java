@@ -1,5 +1,7 @@
 package master2018.flink.datatypes;
 
+import org.apache.flink.api.java.tuple.Tuple7;
+
 /**
  *  ACCIDENT CLASS
  *
@@ -25,16 +27,10 @@ package master2018.flink.datatypes;
  *                 Position in meters from the western most point of the highway, int because it is bounded.
  */
 
-public class Accident {
+public class Accident extends Tuple7<Long, Long, String, Integer, Integer, Integer, Integer> {
 
-    /* Variable Allocation */
-    private Long time1;
-    private Long time2;
-    private String vid;
-    private int x_way;
-    private int segment;
-    private int direction;
-    private int position;
+    public Accident() {
+    }
 
     /**
      * Class Constructor
@@ -45,13 +41,13 @@ public class Accident {
      * @param data2 fourth PositionEvent of the four events that make up an accident
      */
     public Accident(PositionEvent data1, PositionEvent data2) {
-        this.time1 = data1.getTime();
-        this.time2 = data2.getTime();
-        this.vid = data2.getVid();
-        this.x_way = data2.getXway();
-        this.segment = data2.getSegment();
-        this.direction = data2.getDirection();
-        this.position = data2.getPosition();
+        this.f0 = data1.getTime();
+        this.f1 = data2.getTime();
+        this.f2 = data2.getVid();
+        this.f3 = data2.getXway();
+        this.f4 = data2.getSegment();
+        this.f5 = data2.getDirection();
+        this.f6 = data2.getPosition();
     }
 
     /**
@@ -62,13 +58,13 @@ public class Accident {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(Long.toString(time1)).append(",");
-        sb.append(Long.toString(time2)).append(",");
-        sb.append(vid).append(",");
-        sb.append(Integer.toString(x_way)).append(",");
-        sb.append(Integer.toString(segment)).append(",");
-        sb.append(Integer.toString(direction)).append(",");
-        sb.append(Integer.toString(position));
+        sb.append(Long.toString(f0)).append(",");
+        sb.append(Long.toString(f1)).append(",");
+        sb.append(f2).append(",");
+        sb.append(Integer.toString(f3)).append(",");
+        sb.append(Integer.toString(f4)).append(",");
+        sb.append(Integer.toString(f5)).append(",");
+        sb.append(Integer.toString(f6));
 
         return sb.toString();
     }
