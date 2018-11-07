@@ -27,7 +27,9 @@ package master2018.flink.datatypes;
 
 public class Accident {
 
-    /* Variable Allocation */
+    /**
+     * Variable Allocation
+     */
     private Long time1;
     private Long time2;
     private String vid;
