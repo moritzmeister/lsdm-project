@@ -1,7 +1,16 @@
 package master2018.flink.datatypes;
 
+/*
+   POSITIONEVENT CLASS
+
+   This class is a datatype used to generate the tuple
+   related to a new incoming event. These tuples are
+   the one coming from the input source and that will be
+   used for processing.
+*/
 public class PositionEvent {
 
+    /* Variable Allocation */
     private Long time;
     private String vid;
     private int speed;
@@ -11,13 +20,26 @@ public class PositionEvent {
     private int segment;
     private int position;
 
+    /* WaterMarks Allocation */
     private boolean hasWatermarkTime;
     private Long watermarkTime;
 
+    /*
+       Class Constructor
+       1. time             = Timestamp from the first event
+       2. vid              = Vehicle ID
+       3. speed            = Speed
+       4. x_way            = Highway ID
+       5. lane             = Lane
+       5. direction        = Segment Number
+       6. segment          = Direction ID
+       7. position         = Position Number
+       8. hasWatermarkTime = Boolean hasWatermark
+       9. watermarkTime    = Watermark
+    */
     public PositionEvent(String[] line){
-        /* Constructs a CensusData Object from a comma separated string input. */
+        /* Constructs from terminal arguments */
         String[] args = line;
-
 
         this.time = Long.parseLong(args[0]);
         this.vid = args[1];
@@ -29,20 +51,20 @@ public class PositionEvent {
         this.position = Integer.parseInt(args[7]);
         this.hasWatermarkTime = false;
         this.watermarkTime = null;
-
     }
 
+    /* Getter and Setters */
     public boolean hasWatermarkTime() {
         return this.hasWatermarkTime;
-    }
-
-    public Long getWatermarkTime() {
-        return (this.watermarkTime);
     }
 
     public void setWatermark() {
         this.hasWatermarkTime = true;
         this.watermarkTime = this.time;
+    }
+
+    public Long getWatermarkTime() {
+        return (this.watermarkTime);
     }
 
     public Long getTime() {
@@ -78,6 +100,11 @@ public class PositionEvent {
         return this.position;
     }
 
+    /*
+       Object Conversion to String - Returns the object attributes as a comma separated string:
+
+       String: <Time,VID,Speed,Highway,Lane,Direction,Segment,Position,HasWatermarkBoolean,Watermark>
+    */
     public String toString() {
         /* Returns the object attributes as a comma separated string */
         StringBuilder sb = new StringBuilder();

@@ -51,14 +51,8 @@ public class AccidentReporter {
                     currentElement = events.next();
 
                     if (count == 4) {
-                        Accident accident = new Accident();
-                        accident.setTime1(firstElement.getTime());
-                        accident.setTime2(currentElement.getTime());
-                        accident.setVid(currentElement.getVid());
-                        accident.setXWay(currentElement.getXway());
-                        accident.setSegment(currentElement.getSegment());
-                        accident.setDirection(currentElement.getDirection());
-                        accident.setPosition(currentElement.getPosition());
+                        Accident accident =
+                                new Accident(firstElement, currentElement);
                         collector.collect(accident);
                     }
                 }

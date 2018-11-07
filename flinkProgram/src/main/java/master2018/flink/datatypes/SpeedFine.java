@@ -1,7 +1,17 @@
 package master2018.flink.datatypes;
 
+/*
+   SPEEDFINE CLASS
+
+   This class is a datatype used to generate the tuple
+   related to fines emitted if the car run faster then
+   90 KM/h.
+
+   Output File: "speedfines.csv"
+*/
 public class SpeedFine {
 
+    /* Variable Allocation */
     private Long time;
     private String vid;
     private int speed;
@@ -9,6 +19,15 @@ public class SpeedFine {
     private int lane;
     private int direction;
 
+    /*
+       Class Constructor
+       1. time      = Timestamp for the event
+       2. vid       = Vehicle ID
+       3. speed     = Speed
+       4. x_way     = Highway ID
+       5. lane      = Highway's Lane
+       6. direction = Direction ID
+    */
     public SpeedFine(PositionEvent positionEvent) {
         this.time = positionEvent.getTime();
         this.vid = positionEvent.getVid();
@@ -18,32 +37,12 @@ public class SpeedFine {
         this.direction = positionEvent.getDirection();
     }
 
-    public void setTime(Long time) {
-        this.time = time;
-    }
+    /*
+       Object Conversion to String - Returns the object attributes as a comma separated string:
 
-    public void setVid(String vid) {
-        this.vid = vid;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public void setXway(int xway) {
-        this.xway = xway;
-    }
-
-    public void setLane(int lane) {
-        this.lane = lane;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
+       String: <Time,VID,Speed,Highway,Lane,Direction>
+    */
     public String toString() {
-        /* Returns the object attributes as a comma separated string */
         StringBuilder sb = new StringBuilder();
 
         sb.append(Long.toString(time)).append(",");
