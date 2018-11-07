@@ -12,7 +12,7 @@ public class SpeedRadar  {
 
     public static SingleOutputStreamOperator<SpeedFine> run(DataStream<PositionEvent> stream) {
         return stream
-                .filter((PositionEvent e) -> e.getSpeed() > MAXIMUM_SPEED).setParallelism(1)
+                .filter((PositionEvent e) -> e.getSpeed() > MAXIMUM_SPEED)//.setParallelism(1)
                 .map(new toSpeedFine());
     }
 

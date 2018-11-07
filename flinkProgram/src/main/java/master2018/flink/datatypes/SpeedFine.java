@@ -16,7 +16,7 @@ public class SpeedFine {
     private String vid;
     private int speed;
     private int xway;
-    private int lane;
+    private int segment;
     private int direction;
 
     /*
@@ -33,24 +33,25 @@ public class SpeedFine {
         this.vid = positionEvent.getVid();
         this.speed = positionEvent.getSpeed();
         this.xway = positionEvent.getXway();
-        this.lane = positionEvent.getLane();
+        this.segment = positionEvent.getSegment();
         this.direction = positionEvent.getDirection();
     }
+
 
     /*
        Object Conversion to String - Returns the object attributes as a comma separated string:
 
-       String: <Time,VID,Speed,Highway,Lane,Direction>
+       String: <Time,VID,Highway,Segment,Direction,Speed>
     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
         sb.append(Long.toString(time)).append(",");
         sb.append(vid).append(",");
-        sb.append(Integer.toString(speed)).append(",");
         sb.append(Integer.toString(xway)).append(",");
-        sb.append(Integer.toString(lane)).append(",");
-        sb.append(Integer.toString(direction));
+        sb.append(Integer.toString(segment)).append(",");
+        sb.append(Integer.toString(direction)).append(",");
+        sb.append(Integer.toString(speed));
 
         return sb.toString();
     }
