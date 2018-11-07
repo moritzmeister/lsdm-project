@@ -4,6 +4,7 @@ import master2018.flink.datatypes.AvgSpeedFine;
 import master2018.flink.datatypes.PositionEvent;
 import master2018.flink.keyselector.VidKey;
 import master2018.flink.windowfunction.AvgSpeedWindow;
+import master2018.flink.windowfunction.AvgSpeedWindowTwo;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
@@ -19,9 +20,9 @@ public class AvgSpeedCheck {
     public SingleOutputStreamOperator<AvgSpeedFine> run(DataStream<PositionEvent> stream) {
         return stream
                 .filter((PositionEvent e) -> (e.getSegment() >= SEGMENT_START
-                        && e.getSegment() <= SEGMENT_END)).setParallelism(1)
+                        && e.getSegment() <= SEGMENT_END))//.setParallelism(1)
                 .keyBy(new VidKey())
                 .window(EventTimeSessionWindows.withGap(Time.seconds(31))) // if there is a missing event, we assume a new trip started
-                .apply(new AvgSpeedWindow(SEGMENT_START, SEGMENT_END, MAXIMUM_SPEED, SPEED_CONVERSION));
+                .apply(new AvgSpeedWindowTwo(SEGMENT_START, SEGMENT_END, MAXIMUM_SPEED, SPEED_CONVERSION));
     }
 }

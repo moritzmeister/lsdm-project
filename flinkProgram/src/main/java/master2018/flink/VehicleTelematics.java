@@ -51,16 +51,6 @@ public class VehicleTelematics {
 
         DataStream<PositionEvent> positionStream = env.addSource(new PositionSource(inputFile));
 
-        //DataStream<PositionEvent> positionStream = env.readTextFile(inputFile).setParallelism(1)
-        //        .map(new StringToPosition()).setParallelism(1)
-        //        .assignTimestampsAndWatermarks(new AscendingTimestampExtractor<PositionEvent>() {
-//
-        //            @Override
-        //            public long extractAscendingTimestamp(PositionEvent element) {
-        //                return element.getTime()*1000;
-        //            }
-        //        });
-
         // Init transformations
         SpeedRadar speedControl = new SpeedRadar();
         AccidentReporter accidentsChecker = new AccidentReporter();
