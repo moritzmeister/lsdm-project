@@ -89,14 +89,14 @@ public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Intege
         return this.f7;
     }
 
-    /*
-       Object Conversion to String - Returns the object attributes as a comma separated string:
-
-       String: <Time,VID,Speed,Highway,Lane,Direction,Segment,Position,HasWatermarkBoolean,Watermark>
-    */
+    /**
+     *  Object Conversion to String - Returns the object attributes as a comma separated string:
+     *
+     *  @return String <Time,VID,Speed,Highway,Lane,Direction,Segment,Position,HasWatermarkBoolean,Watermark>
+     */
     public String toString() {
-        /* Returns the object attributes as a comma separated string */
         StringBuilder sb = new StringBuilder();
+
         sb.append(Long.toString(f0)).append(",");
         sb.append(f1).append(",");
         sb.append(Integer.toString(f2)).append(",");
@@ -105,6 +105,7 @@ public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Intege
         sb.append(Integer.toString(f5)).append(",");
         sb.append(Integer.toString(f6)).append(",");
         sb.append(Integer.toString(f7));
+
         return sb.toString();
     }
 }
