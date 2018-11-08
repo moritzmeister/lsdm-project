@@ -6,6 +6,12 @@ import master2018.flink.mapfunction.ToSpeedFine;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 
+/**
+ *  SPEEDRADAR CLASS
+ *
+ *  This class performs the job of finding those cars
+ *  that exceed 90km/h.
+ */
 public class SpeedRadar  {
 
     private static final int MAXIMUM_SPEED = 90;

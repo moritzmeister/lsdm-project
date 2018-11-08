@@ -3,28 +3,24 @@ package master2018.flink.datatypes;
 import org.apache.flink.api.java.tuple.Tuple7;
 
 /**
- *  ACCIDENT CLASS
+ * ACCIDENT CLASS
  *
- *  This class is a datatype used to generate the tuple
- *  related to an accident. If an accident occurs a tuple
- *  is generated, ready to be written.
+ * This class is a datatype used to generate the tuple
+ * related to an accident. If an accident occurs a tuple
+ * is generated, ready to be written.
  *
- *  Output File: "accidents.csv"
+ * Output File: "accidents.csv"
  *
- *  1. time1     : Timestamp from the first event
- *                 Long because Flink measures time in milliseconds since the Java epoch of 1970-01-01T00:00:00Z.
- *  2. time2     : Timestamp from the fourth event
- *                 Long because Flink measures time in milliseconds since the Java epoch of 1970-01-01T00:00:00Z.
- *  3. vid       : Vehicle ID
- *                 String to make it work with any identifier.
- *  4. x_way     : Highway ID
- *                 The ID identifying the highway a car is on, it is int because it is bounded.
- *  5. segment   : Segment Number
- *                 The ID identifying the segment of a highway a car is on, it is int because it is bounded.
- *  6. direction : Direction ID
- *                 0 or 1, indicating the direction, east or west. Int because there are only two possible values.
- *  7. position  : Position Number
- *                 Position in meters from the western most point of the highway, int because it is bounded.
+ * 1: Time1, in seconds identifying the time at which the position event was emitted. Using Long since in reality a data
+ * stream is infinite. It comes from the first event.
+ * 2: Time2, in seconds identifying the time at which the position event was emitted. Using Long since in reality a data
+ * stream is infinite. It comes from the fourth event.
+ * 3: VID, a string that identifies the vehicle.
+ * 4: XWay, an integer identifying the highway from which the position report is emitted (0...L−1).
+ * 5: Seg, an integer identifying the segment from which the position report is emitted (0...99).
+ * 6: Dir, an integer identifying the direction (0 for Eastbound and 1 for Westbound) the vehicle is traveling.
+ * 7: Pos, an integer identifying the horizontal position of the vehicle as the number of meters from the westernmost
+ * point on the highway (i.e., Pos = x, 0...527999)
  */
 
 public class Accident extends Tuple7<Long, Long, String, Integer, Integer, Integer, Integer> {
@@ -32,7 +28,7 @@ public class Accident extends Tuple7<Long, Long, String, Integer, Integer, Integ
     public Accident() {
     }
 
-    /**
+    /*
      * Class Constructor
      * Constructs a Accident event object from two PositionEvents, the first and the fourth event
      * of a series that a car hasn't moved.
@@ -50,7 +46,7 @@ public class Accident extends Tuple7<Long, Long, String, Integer, Integer, Integ
         this.f6 = data2.getPosition();
     }
 
-    /**
+    /*
      * Object Conversion to String - Returns the object attributes as a comma separated string:
      *
      * @return String <Time1,Time2,VID,Highway,Segment,Direction,Position>

@@ -8,6 +8,16 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
+/**
+ *  ACCIDENTREPORTER CLASS
+ *
+ *  This class perform the job of finding those cars
+ *  stopped because an accident occurred.
+ *
+ *  An accident occurs when a car remain in the same
+ *  position for four consecutive emitted Timestamps.
+ *
+ */
 public class AccidentReporter {
 
     private static final int ACCIDENT_SPEED = 0;

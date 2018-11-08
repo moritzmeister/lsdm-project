@@ -31,6 +31,7 @@ public class VehicleTelematics {
 
     public static void main(String[] args) throws Exception {
 
+        // Getting input and output paths from terminal
         if (args.length < 2) {
             System.out.println("Usage: <input file> <output folder>");
             throw new Exception();
