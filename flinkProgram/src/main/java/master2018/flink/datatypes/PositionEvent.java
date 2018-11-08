@@ -20,9 +20,9 @@ public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Intege
        3. speed            = Speed
        4. x_way            = Highway ID
        5. lane             = Lane
-       5. direction        = Segment Number
-       6. segment          = Direction ID
-       7. position         = Position Number
+       6. direction        = Segment Number
+       7. segment          = Direction ID
+       8. position         = Position Number
     */
 
     public PositionEvent(){

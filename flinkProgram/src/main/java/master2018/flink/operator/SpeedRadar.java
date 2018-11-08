@@ -8,9 +8,9 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 
 public class SpeedRadar  {
 
-    public static final int MAXIMUM_SPEED = 90;
+    private static final int MAXIMUM_SPEED = 90;
 
-    public static SingleOutputStreamOperator<SpeedFine> run(DataStream<PositionEvent> stream) {
+    public SingleOutputStreamOperator<SpeedFine> run(DataStream<PositionEvent> stream) {
         return stream
                 .filter((PositionEvent e) -> e.getSpeed() > MAXIMUM_SPEED)
                 .map(new ToSpeedFine());

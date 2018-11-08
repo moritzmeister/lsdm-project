@@ -43,12 +43,8 @@ public class VehicleTelematics {
         String inputFile = args[0];
         String outputFolder = args[1];
 
-        //String inputFile = "data/traffic-3xways.csv";
-        //String outputFolder = "output";
-
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-        //env.setParallelism(1);
 
         DataStream<PositionEvent> positionStream = env.addSource(new PositionSource(inputFile));
 
@@ -63,7 +59,7 @@ public class VehicleTelematics {
         DataStream<AvgSpeedFine> OutputAvgSpeedFines = avgSpeedChecker.run(positionStream);
 
         // Write final streams to output files
-        OutputFines.writeAsText(outputFolder + "/" + SPEEDFINES, FileSystem.WriteMode.OVERWRITE).setParallelism(1);git comm
+        OutputFines.writeAsText(outputFolder + "/" + SPEEDFINES, FileSystem.WriteMode.OVERWRITE).setParallelism(1);
         OutputAccidents.writeAsText(outputFolder + "/" + ACCIDENTS, FileSystem.WriteMode.OVERWRITE).setParallelism(1);
         OutputAvgSpeedFines.writeAsText(outputFolder + "/" + AVGSPEEDFINES, FileSystem.WriteMode.OVERWRITE).setParallelism(1);
 
