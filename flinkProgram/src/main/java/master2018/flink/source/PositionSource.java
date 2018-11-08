@@ -6,6 +6,13 @@ import org.apache.flink.streaming.api.watermark.Watermark;
 
 import java.io.*;
 
+/**
+ * PositionSource: A SourceFunction to create a stream of PositionEvents from an input file.
+ * The source maps the strings to PositionEvent tuples and attaches Timestamps and strictly increasing watermarks.
+ * The source function assumes that the input file is ordered by increasing timestamps.
+ * ATTENTION: Both timestamps and watermarks are specified as milliseconds since the Java epoch of 1970-01-01T00:00:00Z.
+ */
+
 public class PositionSource implements SourceFunction<PositionEvent> {
 
     private final String inputFile;
@@ -20,6 +27,7 @@ public class PositionSource implements SourceFunction<PositionEvent> {
     public void run(SourceContext<PositionEvent> sourceContext) throws Exception {
         System.out.println("Start DataSource");
 
+        // Initialize file input stream and buffered reader
         fileStream = new FileInputStream(inputFile);
         reader = new BufferedReader(new InputStreamReader(fileStream, "UTF-8"));
 
@@ -41,32 +49,26 @@ public class PositionSource implements SourceFunction<PositionEvent> {
 
         System.out.println("Generating stream: ");
 
-        /*
-        *
-        * ADD LOGIC TO EMIT TIMESTAMPS as EVENT TIME
-        * ATTENTION: Both timestamps and watermarks are specified as milliseconds since the Java epoch of 1970-01-01T00:00:00Z.
-        * We have seconds, so *1000
-        *
-         */
+        // Read one line at a time, transform it to PositionEvent and add it to the emit schedule
         while (reader.ready() && (line = reader.readLine()) != null) {
 
             String[] args = line.split(",");
 
             // Skip compromised rows in the input data and output them to the console
             if (args.length != 8){
-                //throw new RuntimeException("Not enough values in input data: " + line);
                 System.out.println("Error in input data: " + line);
             } else {
                 data = new PositionEvent(args);
 
                 sourceContext.collectWithTimestamp(data, (data.getTime()*1000));
 
-                // Check if Event time progressed and if it did increase the currentEventTime
+                // Check if EventTime progressed and if it did, increase the current EventTime and emit Watermark
                 if((data.getTime()*1000) > currentEventTime) {
                     currentEventTime = (data.getTime()*1000);
                     sourceContext.emitWatermark(new Watermark((data.getTime()*1000)));
                 }
 
+                // Security count to keep track of read tuples
                 count += 1;
             }
         }

@@ -4,7 +4,6 @@ import master2018.flink.datatypes.Accident;
 import master2018.flink.datatypes.AvgSpeedFine;
 import master2018.flink.datatypes.PositionEvent;
 import master2018.flink.datatypes.SpeedFine;
-import master2018.flink.mapfunction.StringToPosition;
 import master2018.flink.operator.AccidentReporter;
 import master2018.flink.operator.AvgSpeedCheck;
 import master2018.flink.operator.SpeedRadar;
@@ -13,7 +12,6 @@ import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 
 /**
  * This is an implementation of the 'vehicle-telematics' assignment for the course on Large Scale Data Management at
@@ -27,14 +25,12 @@ import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExt
 
 public class VehicleTelematics {
 
-    public static final String SPEEDFINES = "speedfines.csv";
-    public static final String AVGSPEEDFINES = "avgspeedfines.csv";
-    public static final String ACCIDENTS = "accidents.csv";
+    private static final String SPEEDFINES = "speedfines.csv";
+    private static final String AVGSPEEDFINES = "avgspeedfines.csv";
+    private static final String ACCIDENTS = "accidents.csv";
 
     public static void main(String[] args) throws Exception {
 
-        //flink run -p 10 -c master2018.flink.VehicleTelematics target/flinkProgram-1.0-SNAPSHOT.jar /Users/moritzmeister/code/lsdm-project/flinkProgram/data/traffic-3xways.csv /Users/moritzmeister/code/lsdm-project/flinkProgram/output
-        //flink run -p 10 -c master2018.flink.VehicleTelematics target/flinkProgram-1.0-SNAPSHOT.jar /Users/gioelebigini/SourceTree/lsdm-project/flinkProgram/data/traffic-3xways.csv /Users/gioelebigini/SourceTree/lsdm-project/flinkProgram/output/
         if (args.length < 2) {
             System.out.println("Usage: <input file> <output folder>");
             throw new Exception();
@@ -43,12 +39,14 @@ public class VehicleTelematics {
         String inputFile = args[0];
         String outputFolder = args[1];
 
+        // Init the StreamExecutionEnvironment and EventTime setting to tell Flink the context
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
+        // Generate the DataStream from input file using the custom source function
         DataStream<PositionEvent> positionStream = env.addSource(new PositionSource(inputFile));
 
-        // Init transformations
+        // Init SingleOutputStreamOperators for the three functionalities
         SpeedRadar speedControl = new SpeedRadar();
         AccidentReporter accidentsChecker = new AccidentReporter();
         AvgSpeedCheck avgSpeedChecker = new AvgSpeedCheck();
@@ -58,13 +56,16 @@ public class VehicleTelematics {
         DataStream<Accident> OutputAccidents = accidentsChecker.run(positionStream);
         DataStream<AvgSpeedFine> OutputAvgSpeedFines = avgSpeedChecker.run(positionStream);
 
-        // Write final streams to output files
-        OutputFines.writeAsText(outputFolder + "/" + SPEEDFINES, FileSystem.WriteMode.OVERWRITE).setParallelism(1);
-        OutputAccidents.writeAsText(outputFolder + "/" + ACCIDENTS, FileSystem.WriteMode.OVERWRITE).setParallelism(1);
-        OutputAvgSpeedFines.writeAsText(outputFolder + "/" + AVGSPEEDFINES, FileSystem.WriteMode.OVERWRITE).setParallelism(1);
+        // Write final streams to output files, no parallelism since want only single files and no partitioned files
+        OutputFines.writeAsText(outputFolder + "/" + SPEEDFINES, FileSystem.WriteMode.OVERWRITE)
+                .setParallelism(1);
+        OutputAccidents.writeAsText(outputFolder + "/" + ACCIDENTS, FileSystem.WriteMode.OVERWRITE)
+                .setParallelism(1);
+        OutputAvgSpeedFines.writeAsText(outputFolder + "/" + AVGSPEEDFINES, FileSystem.WriteMode.OVERWRITE)
+                .setParallelism(1);
 
         try {
-            env.execute("vehicle-telematics");
+            env.execute("VehicleTelematics");
         } catch (Exception e) {
             e.printStackTrace();
         }

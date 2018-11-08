@@ -1,35 +1,34 @@
 package master2018.flink.datatypes;
 
-/*
-   POSITION EVENT CLASS
-
-   This class is a datatype used to generate the tuple
-   related to a new incoming event. These tuples are
-   the one coming from the input source and that will be
-   used for processing.
-*/
-
 import org.apache.flink.api.java.tuple.Tuple8;
 
-public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Integer, Integer, Integer, Integer> {
+/**
+ * PositionEvent class is a custom datatype extending the Flink Tuple.
+ * The instances are created in the source function from the lines of the input file.
+ * These tuples are the starting point for all further transformations.
+ * Note: The timestamp is saved in seconds, but Flink works in milliseconds, therefore we need to multiply by 1000 every
+ * time we pass a timestamp to Flink.
+ *
+ * Fields:
+ * 0: Time, in seconds identifying the time at which the position event was emitted. Using Long since in reality a data
+ * stream is infinite
+ * 1: VID, a string that identifies the vehicle.
+ * 2: Speed, an integer that represents the speed mph (miles per hour) of the vehicle (0-100).
+ * 3: XWay, an integer identifying the highway from which the position report is emitted (0...L−1).
+ * 4: Lane, an integer identifying the lane of the highway from which the position report is emitted (0...4).
+ * 5: Dir, an integer identifying the direction (0 for Eastbound and 1 for Westbound) the vehicle is traveling.
+ * 6: Seg, an integer identifying the segment from which the position report is emitted (0...99).
+ * 7: Pos, an integer identifying the horizontal position of the vehicle as the number of meters from the westernmost
+ * point on the highway (i.e., Pos = x, 0...527999)
+ */
 
-    /*
-       Class Constructor
-       1. time             = Timestamp from the first event
-       2. vid              = Vehicle ID
-       3. speed            = Speed
-       4. x_way            = Highway ID
-       5. lane             = Lane
-       6. direction        = Segment Number
-       7. segment          = Direction ID
-       8. position         = Position Number
-    */
+public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Integer, Integer, Integer, Integer> {
 
     public PositionEvent(){
     }
 
     public PositionEvent(String[] line){
-        /* Constructs from terminal arguments */
+        // Constructs from split string
         String[] args = line;
 
         this.f0 = Long.parseLong(args[0]);
@@ -43,7 +42,7 @@ public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Intege
     }
 
     public PositionEvent(String line){
-        /* Constructs from terminal arguments */
+        // Constructs from string line, read from a csv
         String[] args = line.split(",");
 
         this.f0 = Long.parseLong(args[0]);
@@ -56,8 +55,8 @@ public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Intege
         this.f7 = Integer.parseInt(args[7]);
     }
 
+    // We are using getters in order to increase readability in the code
     public Long getTime() {
-        // Flink works in milliseconds
         return this.f0;
     }
 
@@ -89,11 +88,9 @@ public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Intege
         return this.f7;
     }
 
-    /**
-     *  Object Conversion to String - Returns the object attributes as a comma separated string:
-     *
-     *  @return String <Time,VID,Speed,Highway,Lane,Direction,Segment,Position,HasWatermarkBoolean,Watermark>
-     */
+
+    // Object Conversion to String - Returns the object attributes as a comma separated string:
+    // <Time,VID,Speed,Highway,Lane,Direction,Segment,Position>
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
