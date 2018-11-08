@@ -48,19 +48,9 @@ public class VehicleTelematics {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-        //env.setParallelism(2);
+        //env.setParallelism(1);
 
         DataStream<PositionEvent> positionStream = env.addSource(new PositionSource(inputFile));
-
-        //DataStream<PositionEvent> positionStream = env.readTextFile(inputFile).setParallelism(1)
-        //        .map(new StringToPosition()).setParallelism(1)
-        //        .assignTimestampsAndWatermarks(new AscendingTimestampExtractor<PositionEvent>() {
-//
-        //            @Override
-        //            public long extractAscendingTimestamp(PositionEvent element) {
-        //                return element.getTime()*1000;
-        //            }
-        //        });
 
         // Init transformations
         SpeedRadar speedControl = new SpeedRadar();
@@ -73,7 +63,7 @@ public class VehicleTelematics {
         DataStream<AvgSpeedFine> OutputAvgSpeedFines = avgSpeedChecker.run(positionStream);
 
         // Write final streams to output files
-        OutputFines.writeAsText(outputFolder + "/" + SPEEDFINES, FileSystem.WriteMode.OVERWRITE).setParallelism(1);
+        OutputFines.writeAsText(outputFolder + "/" + SPEEDFINES, FileSystem.WriteMode.OVERWRITE).setParallelism(1);git comm
         OutputAccidents.writeAsText(outputFolder + "/" + ACCIDENTS, FileSystem.WriteMode.OVERWRITE).setParallelism(1);
         OutputAvgSpeedFines.writeAsText(outputFolder + "/" + AVGSPEEDFINES, FileSystem.WriteMode.OVERWRITE).setParallelism(1);
 

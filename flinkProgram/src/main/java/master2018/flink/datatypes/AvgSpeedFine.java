@@ -1,11 +1,24 @@
 package master2018.flink.datatypes;
 
+import org.apache.flink.api.java.tuple.Tuple;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple6;
+
+import javax.swing.text.Position;
 
 public class AvgSpeedFine extends Tuple6<Long, Long, String, Integer, Integer, Double> {
 
     public AvgSpeedFine() {
+    }
 
+    public AvgSpeedFine(PositionEvent firstElement, PositionEvent lastElement,
+                        Tuple key, double avgSpeed) {
+        this.f0 = firstElement.getTime();
+        this.f1 = lastElement.getTime();
+        this.f2 = key.getField(0);
+        this.f3 = key.getField(1);
+        this.f4 = key.getField(2);
+        this.f5 = avgSpeed;
     }
 
     public void setTime1(Long time1) {
