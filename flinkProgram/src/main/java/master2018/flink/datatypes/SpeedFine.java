@@ -11,13 +11,13 @@ import org.apache.flink.api.java.tuple.Tuple6;
  *
  * Output File: "speedfines.csv"
  *
- * 1: Time, in seconds identifying the time at which the position event was emitted. Using Long since in reality a data
- * stream is infinite
- * 2: VID, a string that identifies the vehicle.
- * 3: Speed, an integer that represents the speed mph (miles per hour) of the vehicle (0-100).
- * 4: XWay, an integer identifying the highway from which the position report is emitted (0...L−1).
- * 5: Lane, an integer identifying the lane of the highway from which the position report is emitted (0...4).
- * 6: Dir, an integer identifying the direction (0 for Eastbound and 1 for Westbound) the vehicle is traveling.
+ * 0: Time, in seconds identifying the time at which the position event was emitted. Using Long since in reality a data
+ * stream is infinite.
+ * 1: VID, a string that identifies the vehicle.
+ * 2: XWay, an integer identifying the highway from which the position report is emitted (0...L−1).
+ * 3: Seg, an integer identifying the segment from which the position report is emitted (0...99).
+ * 4: Dir, an integer identifying the direction (0 for Eastbound and 1 for Westbound) the vehicle is traveling.
+ * 5: Speed, an integer that represents the speed mph (miles per hour) of the vehicle (0-100).
  */
 
 public class SpeedFine extends Tuple6<Long, String, Integer, Integer, Integer, Integer> {
@@ -26,8 +26,7 @@ public class SpeedFine extends Tuple6<Long, String, Integer, Integer, Integer, I
     }
 
     /*
-     * Constructs a PositionEvent event object from two PositionEvents, the first and the fourth event
-     * of a series that a car hasn't moved.
+     * Constructs a SpeedFine event object from one  PositionEvent.
      *
      * @param positionEvent PositionEvent of the car that will be fined
     */

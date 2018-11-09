@@ -55,7 +55,9 @@ public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Intege
         this.f7 = Integer.parseInt(args[7]);
     }
 
-    // We are using getters in order to increase readability in the code
+    /*
+     * We are using getters in order to increase readability in the code.
+     */
     public Long getTime() {
         return this.f0;
     }
@@ -89,8 +91,11 @@ public class PositionEvent extends Tuple8<Long, String, Integer, Integer, Intege
     }
 
 
-    // Object Conversion to String - Returns the object attributes as a comma separated string:
-    // <Time,VID,Speed,Highway,Lane,Direction,Segment,Position>
+    /*
+     * Object Conversion to String - Returns the object attributes as a comma separated string:
+     *
+     * @return string <Time,VID,Speed,Highway,Lane,Direction,Segment,Position>
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
 

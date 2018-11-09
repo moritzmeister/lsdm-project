@@ -11,15 +11,15 @@ import org.apache.flink.api.java.tuple.Tuple7;
  *
  * Output File: "accidents.csv"
  *
- * 1: Time1, in seconds identifying the time at which the position event was emitted. Using Long since in reality a data
+ * 0: Time1, in seconds identifying the time at which the position event was emitted. Using Long since in reality a data
  * stream is infinite. It comes from the first event.
- * 2: Time2, in seconds identifying the time at which the position event was emitted. Using Long since in reality a data
+ * 1: Time2, in seconds identifying the time at which the position event was emitted. Using Long since in reality a data
  * stream is infinite. It comes from the fourth event.
- * 3: VID, a string that identifies the vehicle.
- * 4: XWay, an integer identifying the highway from which the position report is emitted (0...L−1).
- * 5: Seg, an integer identifying the segment from which the position report is emitted (0...99).
- * 6: Dir, an integer identifying the direction (0 for Eastbound and 1 for Westbound) the vehicle is traveling.
- * 7: Pos, an integer identifying the horizontal position of the vehicle as the number of meters from the westernmost
+ * 2: VID, a string that identifies the vehicle.
+ * 3: XWay, an integer identifying the highway from which the position report is emitted (0...L−1).
+ * 4: Seg, an integer identifying the segment from which the position report is emitted (0...99).
+ * 5: Dir, an integer identifying the direction (0 for Eastbound and 1 for Westbound) the vehicle is traveling.
+ * 6: Pos, an integer identifying the horizontal position of the vehicle as the number of meters from the westernmost
  * point on the highway (i.e., Pos = x, 0...527999)
  */
 
