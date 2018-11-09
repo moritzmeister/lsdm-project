@@ -10,33 +10,47 @@ import org.apache.flink.util.Collector;
 
 import java.util.HashSet;
 
-public class AccidentWindow implements WindowFunction<PositionEvent, Accident,
-        Tuple, TimeWindow> {
+/**
+ *  ACCIDENT WINDOWS CLASS
+ *
+ *  This class contains the window function to be executed when
+ *  looking for an accident. If a car has an accident, It is
+ *  collected.
+ *
+ *  An accident occurs when a car remain in the same position
+ *  for four consecutive emitted Timestamps.
+ */
+public class AccidentWindow implements WindowFunction<PositionEvent, Accident, Tuple, TimeWindow> {
 
     @Override
     public void apply(Tuple key, TimeWindow  timeWindow,
-                      Iterable<PositionEvent> iterable, Collector<Accident> collector) {
+                      Iterable<PositionEvent> iterable, Collector<Accident> collector) throws Exception {
 
-        if (Iterables.size(iterable) != 4) return;
+        // Enter with 4 events only
+        if (Iterables.size(iterable) == 4) {
 
-        PositionEvent firstElement = null;
-        PositionEvent lastElement = null;
+            PositionEvent firstElement = null;
+            PositionEvent lastElement = null;
 
-        HashSet<Long> uniqueTimestamps = new HashSet<>();
+            HashSet<Long> uniqueTimestamps = new HashSet<>();
 
-        for (PositionEvent currentElement : iterable) {
-            uniqueTimestamps.add(currentElement.getTime());
+            for (PositionEvent currentElement : iterable) {
+                // Looking for distinct values
+                uniqueTimestamps.add(currentElement.getTime());
 
-            if (firstElement == null || currentElement.getTime() < firstElement.getTime()) {
-                firstElement = currentElement;
+                // Order the elements
+                if (firstElement == null || currentElement.getTime() < firstElement.getTime()) {
+                    firstElement = currentElement;
+                }
+                if (lastElement == null || currentElement.getTime() > lastElement.getTime()) {
+                    lastElement = currentElement;
+                }
             }
-            if (lastElement == null || currentElement.getTime() > lastElement.getTime()) {
-                lastElement = currentElement;
-            }
-        }
 
-        if (uniqueTimestamps.size() == 4 && ((lastElement.getTime() - firstElement.getTime()) == 90)) {
-            collector.collect(new Accident(firstElement, lastElement));
+            // Collect
+            if (uniqueTimestamps.size() == 4 && ((lastElement.getTime() - firstElement.getTime()) == 90)) {
+                collector.collect(new Accident(firstElement, lastElement));
+            }
         }
     }
 }

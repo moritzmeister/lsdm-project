@@ -16,7 +16,6 @@ import org.apache.flink.streaming.api.windowing.time.Time;
  *
  *  An accident occurs when a car remain in the same
  *  position for four consecutive emitted Timestamps.
- *
  */
 public class AccidentReporter {
 
