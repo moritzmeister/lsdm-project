@@ -24,6 +24,7 @@ public class AccidentReporter {
     public SingleOutputStreamOperator<Accident> run(DataStream<PositionEvent> stream) {
         return stream
                 .filter((PositionEvent e) -> e.getSpeed() == ACCIDENT_SPEED)
+                // Key by VID, Highway and Direction
                 .keyBy(1,3,5)
                 .window(SlidingEventTimeWindows.of(Time.seconds(120),Time.seconds(30)))
                 .apply(new AccidentWindow());

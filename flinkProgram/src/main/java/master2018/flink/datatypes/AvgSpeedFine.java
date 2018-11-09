@@ -7,7 +7,7 @@ import org.apache.flink.api.java.tuple.Tuple6;
  * AVGSPEEDFINE CLASS
  *
  * This class is a datatype used to generate the tuple
- * related to fines emitted if the car runs faster than 60 mp/h between the highway segments 52 and 56.
+ * related to fines emitted if the car runs faster than 60 mph between the highway segments 52 and 56.
  *
  * Output File: "avgspeedfines.csv"
  *

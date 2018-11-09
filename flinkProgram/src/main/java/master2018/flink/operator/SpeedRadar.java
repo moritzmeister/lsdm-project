@@ -11,6 +11,8 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
  *
  *  This class performs the job of finding those cars
  *  that exceed 90km/h.
+ *
+ *  Returns a single data stream of SpeedFine objects.
  */
 public class SpeedRadar  {
 

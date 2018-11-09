@@ -7,7 +7,7 @@ import org.apache.flink.api.java.tuple.Tuple6;
  *
  * This class is a datatype used to generate the tuple
  * related to fines emitted if the car run faster then
- * 90 KM/h.
+ * 90 mph.
  *
  * Output File: "speedfines.csv"
  *

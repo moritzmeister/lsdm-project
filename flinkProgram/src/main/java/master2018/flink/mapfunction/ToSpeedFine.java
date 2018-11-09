@@ -8,7 +8,7 @@ import org.apache.flink.api.common.functions.MapFunction;
  *  TOSPEEDFINE CLASS
  *
  *  This class is used to generate a fine starting from
- *  the details of a car.
+ *  PositionEvent of a car once it was faster than 90 mph.
  */
 public class ToSpeedFine implements MapFunction<PositionEvent, SpeedFine> {
     @Override

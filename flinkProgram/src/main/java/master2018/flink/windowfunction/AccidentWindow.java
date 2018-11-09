@@ -32,13 +32,14 @@ public class AccidentWindow implements WindowFunction<PositionEvent, Accident, T
             PositionEvent firstElement = null;
             PositionEvent lastElement = null;
 
+            // A HashSet to keep track of unique timestamps in the window under consideration
             HashSet<Long> uniqueTimestamps = new HashSet<>();
 
             for (PositionEvent currentElement : iterable) {
                 // Looking for distinct values
                 uniqueTimestamps.add(currentElement.getTime());
 
-                // Order the elements
+                // Find the first and the last elements, irrespective of their order
                 if (firstElement == null || currentElement.getTime() < firstElement.getTime()) {
                     firstElement = currentElement;
                 }

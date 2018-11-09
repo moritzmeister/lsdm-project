@@ -7,10 +7,13 @@ import org.apache.flink.streaming.api.watermark.Watermark;
 import java.io.*;
 
 /**
- * PositionSource: A SourceFunction to create a stream of PositionEvents from an input file.
+ * PositionSource Class
+ * A SourceFunction to create a stream of PositionEvents from an input file.
+ *
  * The source maps the strings to PositionEvent tuples and attaches Timestamps and strictly increasing watermarks.
  * The source function assumes that the input file is ordered by increasing timestamps.
  * ATTENTION: Both timestamps and watermarks are specified as milliseconds since the Java epoch of 1970-01-01T00:00:00Z.
+ *
  */
 
 public class PositionSource implements SourceFunction<PositionEvent> {

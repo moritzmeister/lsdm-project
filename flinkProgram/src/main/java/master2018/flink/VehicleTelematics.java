@@ -17,6 +17,8 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * This is an implementation of the 'vehicle-telematics' assignment for the course on Large Scale Data Management at
  * Universidad Politecnica de Madrid.
  * This is the main class to be run, in order to produce the desired results for the three functionalities.
+ * We only enforce parallelism for the Data Source in order to preserve the ordering of events
+ * and for Data Sinks to make sure only one output file per task is written.
  *
  * @author  Gioele Bigini, Moritz Meister
  * @version 1.0
